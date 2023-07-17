@@ -1,0 +1,15 @@
+on: workflow_dispatch
+
+jobs:
+  hello_world_job:
+    runs-on: ubuntu-latest
+    name: A job to say hello
+    steps:
+    - name: Hello World action step
+      id: hello
+      uses: JesseBroxterman/hello-world-javascript-action@v1
+      with:
+        who-to-greet: 'Test Name'
+        
+    - name: Get the out time
+      run: echo "The time was ${{ steps.hello.outputs.time }}
