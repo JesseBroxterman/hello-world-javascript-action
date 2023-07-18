@@ -1,3 +1,3 @@
 # hello-world-javascript-action
 
-# another test
+# fixing the bug
