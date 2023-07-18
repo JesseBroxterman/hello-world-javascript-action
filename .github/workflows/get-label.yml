@@ -9,7 +9,11 @@ jobs:
     steps:
     - name: Get issue
       uses: actions-cool/issues-helper@v3
+      id: getIssue
       with:
         actions: 'get-issue'
         token: ${{ secrets.GITHUB_TOKEN }}
         issue-number: 3
+        
+    - name: Check Outputs
+      run: echo "Outputs issue_labels is ${{ steps.getIssue.outputs.issue_labels }}"
