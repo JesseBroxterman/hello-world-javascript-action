@@ -34,9 +34,9 @@ jobs:
         script: |
           const prNumber = context.issue.number;
           const labels = `${{ steps.retrieve-issue-labels.outputs.issue_labels }}`.split('\n').filter(Boolean);
-          await github.issues.addLabels({
+          await github.pulls.addLabels({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            issue_number: prNumber,
+            pull_number: prNumber,
             labels: labels
           });
