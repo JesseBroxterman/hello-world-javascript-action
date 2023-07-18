@@ -27,6 +27,11 @@ jobs:
         issue_labels=$(echo "$issue_data" | jq -r '.labels[].name')
         echo "::set-output name=issue_labels::$issue_labels"
 
+    - name: View the github context
+      run: echo "$GITHUB_CONTEXT"
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+    
     - name: Apply Labels to Pull Request
       uses: actions/github-script@v6
       with:
