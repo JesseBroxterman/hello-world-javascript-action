@@ -5,16 +5,23 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
-  retrieve-labels:
+  retrieve-issue:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check out code
+    - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Retrieve Labels
+    - name: Extract issue number
+      id: extract-issue
       run: |
-        issue_number=$(jq --raw-output .pull_request.issue.number "$GITHUB_EVENT_PATH")
-        labels=$(curl -s "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/$issue_number" | jq -r '.labels | .[].name')
+        branch_name=${{ github.event.pull_request.head.ref }}
+        issue_number=$(echo "$branch_name" | grep -oP '^\d+')
+        echo "::set-output name=issue_number::$issue_number"
 
-        echo "Labels: $labels"
+    - name: Retrieve Issue
+      id: retrieve-issue
+      run: |
+        issue_number=${{ steps.extract-issue.outputs.issue_number }}
+        issue_data=$(curl -s "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/$issue_number")
+        echo "::set-output name=issue_data::$issue_data"
