@@ -7,6 +7,8 @@ on:
 jobs:
   retrieve-issue-labels:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
 
     steps:
     - name: Checkout code
@@ -32,16 +34,9 @@ jobs:
       env:
         GITHUB_CONTEXT: ${{ toJson(github) }}
     
-    - name: Apply Labels to Pull Request
-      uses: actions/github-script@v6
+    - name: Add labels
+      uses: actions-ecosystem/action-add-labels@v1
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          const prNumber = context.issue.number;
-          const labels = `${{ steps.retrieve-issue-labels.outputs.issue_labels }}`.split('\n').filter(Boolean);
-          await github.pulls.addLabels({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            pull_number: prNumber,
-            labels: labels
-          });
+        token: ${{ secrets.GITHUB_TOKEN }}
+        labels: "`${{ steps.retrieve-issue-labels.outputs.issue_labels }}`.split('\n').filter(Boolean)"
+        issue-or-pull-request-number: ${{ github.event.pull_request.number }}
