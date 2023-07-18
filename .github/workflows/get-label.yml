@@ -2,7 +2,7 @@ name: Label Retrieval
 
 on:
   pull_request:
-    types: [opened, synchronize]
+    types: [opened, synchronize, reopened]
 
 jobs:
   retrieve-labels:
