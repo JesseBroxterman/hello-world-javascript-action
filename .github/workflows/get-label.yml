@@ -1,0 +1,15 @@
+name: Get Label from issue
+on:
+  pull_request
+    types: [opened, reopened]
+
+jobs:
+  display-github-context:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get issue
+      uses: actions-cool/issues-helper@v3
+      with:
+        actions: 'get-issue'
+        token: ${{ secrets.GITHUB_TOKEN }}
+        issue-number: 3
