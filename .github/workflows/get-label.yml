@@ -1,19 +1,20 @@
-name: Get Label from issue
-on: 
+name: Label Retrieval
+
+on:
   pull_request:
-    types: [opened, reopened]
-    
+    types: [opened, synchronize]
+
 jobs:
-  display-github-context:
+  retrieve-labels:
     runs-on: ubuntu-latest
+
     steps:
-    - name: Get issue
-      uses: actions-cool/issues-helper@v3
-      id: getIssue
-      with:
-        actions: 'get-issue'
-        token: ${{ secrets.GITHUB_TOKEN }}
-        issue-number: 3
-        
-    - name: Check Outputs
-      run: echo "Outputs issue_labels is ${{ steps.getIssue.outputs.issue_labels }}"
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Retrieve Labels
+      run: |
+        issue_number=$(jq --raw-output .pull_request.issue.number "$GITHUB_EVENT_PATH")
+        labels=$(curl -s "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/$issue_number" | jq -r '.labels | .[].name')
+
+        echo "Labels: $labels"
