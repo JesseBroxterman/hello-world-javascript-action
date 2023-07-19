@@ -3,29 +3,18 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+  
 jobs:
   increment-version:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
     
       - name: Get current version
         run: echo "current_version=$(git describe --tags --abbrev=0)"
 
-      - name: Get labels
-        run: |
-          labels=$(echo "${{ github.event.pull_request.labels }}" | tr ',' ' ')
 
-      - name: Increment version
-        run: |
-          if [[ "enhancement" in $labels ]]; then
-            new_version=$(echo $current_version | cut -d. -f1-2).$((minor + 1))
-          elif [[ "bug" in $labels ]]; then
-            new_version=$(echo $current_version | cut -d. -f1-2).$((patch + 1))
-          else
-            new_version=$current_version
-          fi
-
-      - name: Tag commit
-        run: git tag $new_version
