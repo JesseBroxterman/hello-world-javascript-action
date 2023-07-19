@@ -18,7 +18,8 @@ jobs:
         
       - name: Get labels
         run: |
-          labels=$(jq -r '.labels[]' "${{ github.event.pull_request.payload }")
+          labels=$(jq -r '.labels[]' "${{ github.event.pull_request.payload }}")
+          
       - name: Increment version
         run: |
           match=$(echo $current_version | grep -E "^(\d+)\.(\d+)\.(\d+)$")
