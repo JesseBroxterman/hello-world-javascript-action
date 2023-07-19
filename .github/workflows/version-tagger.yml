@@ -17,23 +17,25 @@ jobs:
         run: |
           echo "current_version=$(git describe --tags --abbrev=0)" >> "$GITHUB_ENV"
           IFS='.' read -r -a version_parts <<< "$version"
-          major="${version_parts[0]}"
-          minor="${version_parts[1]}"
-          patch="${version_parts[2]}"
+          major="${version_parts[0]}" >> "$GITHUB_ENV"
+          minor="${version_parts[1]}" >> "$GITHUB_ENV"
+          patch="${version_parts[2]}" >> "$GITHUB_ENV"
+          
+      - name: Bump patch
+        if: contains(github.event.pull_request.labels.*.name, 'bug')
+        run: |
+          $minor=$(($minor + 1))
+          $patch=0
       
-          if [[ contains(github.event.pull_request.labels.*.name, 'enhancement') ]]; then
-              minor=$((minor + 1))
-              patch=0
-            elif [[ contains(github.event.pull_request.labels.*.name, 'bug')]]; then
-              patch=$((patch + 1))
-            else
-              pass
-            fi
-            new_version="$major.$minor.$patch"
-          else
-            new_version=$current_version
-          fi
-          echo "new_version=$new_version"
+      - name: Bump minor
+        if: contains(github.event.pull_request.labels.*.name, 'enhancement')
+        run: |
+          patch=$((patch + 1))
+          
+      - name: Assign new version tag
+        run: |
+          new_version="$major.$minor.$patch"
+          echo "$new_version"
 
 
 
