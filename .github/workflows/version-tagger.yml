@@ -14,18 +14,31 @@ jobs:
           fetch-depth: 0
     
       - name: Get current version
-        run: echo "current_version=$(git describe --tags --abbrev=0)" >> "$GITHUB_ENV"
-      
-      - name: Extract Label Names
         run: |
-          # Install jq for JSON processing
-          sudo apt-get update && sudo apt-get install -y jq
+          echo "current_version=$(git describe --tags --abbrev=0)" >> "$GITHUB_ENV"
+          IFS='.' read -r -a version_parts <<< "$version"
+          major="${version_parts[0]}"
+          minor="${version_parts[1]}"
+          patch="${version_parts[2]}"
+      
+          if [[ contains(github.event.pull_request.labels.*.name, 'enhancement') ]]; then
+              minor=$((minor + 1))
+              patch=0
+            elif [[ contains(github.event.pull_request.labels.*.name, 'bug')]]; then
+              patch=$((patch + 1))
+            else
+              pass
+            fi
+            new_version="$major.$minor.$patch"
+          else
+            new_version=$current_version
+          fi
+          echo "new_version=$new_version"
 
-          # Extracting label names using jq and storing them in the 'label_names' variable
-          label_names=$(echo "${{ toJson(github.event.pull_request.labels) }}" | jq -r '.[].name')
 
-          # Printing the label names for verification
-          echo "Pull Request Label Names: $label_names"
+
+
+
       
 
             
