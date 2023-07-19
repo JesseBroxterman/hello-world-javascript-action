@@ -25,19 +25,7 @@ jobs:
             minor=$(echo $match | cut -d. -f2)
             patch=$(echo $match | cut -d. -f3)
             
-            if [[ contains(github.event.pull_request.labels.*.name, 'enhancement') ]]; then
-              minor=$((minor + 1))
-              patch=0
-            elif [[ contains(github.event.pull_request.labels.*.name, 'bug')]]; then
-              patch=$((patch + 1))
-            else
-              pass
-            fi
-            new_version="$major.$minor.$patch"
-          else
-            new_version=$current_version
-          fi
-          echo "new_version=$new_version"    
+
 
 
 
