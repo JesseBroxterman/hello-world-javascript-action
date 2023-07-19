@@ -1,3 +1,3 @@
 # hello-world-javascript-action
-#bugfi
+#bugf
 
