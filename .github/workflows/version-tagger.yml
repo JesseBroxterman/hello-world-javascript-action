@@ -15,7 +15,7 @@ jobs:
     
       - name: Get current version
         run: |
-          echo "current_version=$(git describe --tags --abbrev=0)" >> "$GITHUB_ENV"
+          echo "current_version=$(git describe --tags --abbrev=0)"
           IFS='.' read -r -a version_parts <<< "$current_version"
           major="${version_parts[0]}"
           minor="${version_parts[1]}"
