@@ -18,13 +18,28 @@ jobs:
         
       - name: Get labels
         id: get-lables
-        run: echo "label_names= ${{ github.event.labels.*.name }}" >> $GITHUB_OUTPUT
+        run: echo "labels= ${{ github.event.labels.*.name }}" >> $GITHUB_OUTPUT
           
-        
-      - name: View the github context
-        run: echo "$GITHUB_CONTEXT"
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}        
+      - name: Increment version
+        run: |
+          match=$(echo $current_version | grep -E "^(\d+)\.(\d+)\.(\d+)$")
+          if [[ $match ]]; then
+            major=$(echo $match | cut -d. -f1)
+            minor=$(echo $match | cut -d. -f2)
+            patch=$(echo $match | cut -d. -f3)
+            if [[ "enhancement" in $labels ]]; then
+              minor=$((minor + 1))
+              patch=0
+            elif [[ "bug" in $labels ]]; then
+              patch=$((patch + 1))
+            else
+              pass
+            fi
+            new_version="$major.$minor.$patch"
+          else
+            new_version=$current_version
+          fi
+          echo "new_version=$new_version"    
 
 
 
