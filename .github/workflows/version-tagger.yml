@@ -23,15 +23,16 @@ jobs:
           minor="${version_parts[1]}"
           patch="${version_parts[2]}"
 
-          if [[ contains(github.event.pull_request.labels.*.name, 'enhancement') ]]; then
-            # Increment the minor version and set the patch to 0
-            ((minor++))
-            patch=0
-          elif [[ contains(github.event.pull_request.labels.*.name, 'bug')]]; then
-            patch=$((patch + 1))
-          else
-            pass
-          fi
+          labels="${{ github.event.pull_request.labels.*.name }}"
+          for label in $labels; do
+            if [[ "$label" == "enhancement" ]]; then
+              # Increment the minor version and set the patch to 0
+              ((minor++))
+              patch=0
+            elif [[ "$label" == "bug" ]]; then
+              patch=$((patch + 1))
+            fi
+          done
           
             new_version="$major.$minor.$patch"
             
