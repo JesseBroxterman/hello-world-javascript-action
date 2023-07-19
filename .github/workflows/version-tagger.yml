@@ -25,26 +25,9 @@ jobs:
           label_names=$(echo "${{ toJson(github.event.pull_request.labels) }}" | jq -r '.[].name')
 
           # Printing the label names for verification
-          echo "labels=$label_names" >> "$GITHUB_ENV"
+          echo "Pull Request Label Names: $label_names"
       
-      - name: Increment version
-        run: |
-          IFS='.' read -r -a version_parts <<< "$current_version"
-          major="${version_parts[0]}"
-          minor="${version_parts[1]}"
-          patch="${version_parts[2]}"
 
-          if [[ $env.labels, 'enhancement') ]]; then
-            # Increment the minor version and set the patch to 0
-            ((minor++))
-            patch=0
-          elif [[ $env.labels, 'bug')]]; then
-            patch=$((patch + 1))
-          else
-            pass
-          fi
-          
-            new_version="$major.$minor.$patch"
             
             
 
