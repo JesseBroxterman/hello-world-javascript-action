@@ -18,7 +18,7 @@ jobs:
                   
       - name: Increment version
         run: |
-          echo "{{ env.current_version }}
+          echo "{{ env.current_version }}"
           match=$(echo {{ env.current_version }} | grep -E "^(\d+)\.(\d+)\.(\d+)$")
           if [[ $match ]]; then
             major=$(echo $match | cut -d. -f1)
