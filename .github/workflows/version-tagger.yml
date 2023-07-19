@@ -20,7 +20,7 @@ jobs:
         run: |
           echo "${{ env.current_version }}"
           match=$(echo ${{ env.current_version }} | grep -E "^(\d+)\.(\d+)\.(\d+)$")
-          echo "match"
+          echo "$match"
 
             
 
