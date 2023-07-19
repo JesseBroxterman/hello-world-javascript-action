@@ -16,6 +16,11 @@ jobs:
       - name: Get current version
         run: echo "current_version=$(git describe --tags --abbrev=0)"
         
+      - name: Get labels
+        id: get-lables
+        run: echo "label_names= ${{ github.event.labels.*.name }}" >> $GITHUB_OUTPUT
+          
+        
       - name: View the github context
         run: echo "$GITHUB_CONTEXT"
         env:
