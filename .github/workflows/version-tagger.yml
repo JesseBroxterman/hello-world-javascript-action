@@ -19,7 +19,7 @@ jobs:
       - name: Increment version
         run: |
           echo "${{ env.current_version }}"
-          match=$(echo ${{ env.current_version }} | grep -E "^(\d+)\.(\d+)\.(\d+)$")
+          match=$(echo ${{ env.current_version }} | grep -E "^(\\d+)\\.(\\d+)\\.(\\d+)$")
           echo "$match"
 
             
