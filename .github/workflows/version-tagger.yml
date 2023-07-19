@@ -18,9 +18,14 @@ jobs:
                   
       - name: Increment version
         run: |
-          echo "${{ env.current_version }}"
-          match=$(echo ${{ env.current_version }} | grep -E "^(\\d+)\\.(\\d+)\\.(\\d+)$")
-          echo "$match"
+          IFS='.' read -r -a version_parts <<< "$current_version"
+          major="${version_parts[0]}"
+          minor="${version_parts[1]}"
+          patch="${version_parts[2]}"
+          
+          echo "$major"
+          echo "$minor"
+          echo "$patch"
 
             
 
