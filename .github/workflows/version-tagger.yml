@@ -25,6 +25,7 @@ jobs:
 
           labels="${{ github.event.pull_request.labels.*.name }}"
           for label in $labels; do
+            echo "$label"
             if [[ "$label" == "enhancement" ]]; then
               # Increment the minor version and set the patch to 0
               ((minor++))
