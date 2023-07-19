@@ -20,10 +20,8 @@ jobs:
         run: |
           echo "${{ env.current_version }}"
           match=$(echo ${{ env.current_version }} | grep -E "^(\d+)\.(\d+)\.(\d+)$")
-          if [[ $match ]]; then
-            major=$(echo $match | cut -d. -f1)
-            minor=$(echo $match | cut -d. -f2)
-            patch=$(echo $match | cut -d. -f3)
+          echo "match"
+
             
 
 
