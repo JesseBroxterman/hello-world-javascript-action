@@ -22,11 +22,18 @@ jobs:
           major="${version_parts[0]}"
           minor="${version_parts[1]}"
           patch="${version_parts[2]}"
-          
-          echo "$major"
-          echo "$minor"
-          echo "$patch"
 
+          if [[ contains(github.event.pull_request.labels.*.name, 'enhancement') ]]; then
+            # Increment the minor version and set the patch to 0
+            ((minor++))
+            patch=0
+          elif [[ contains(github.event.pull_request.labels.*.name, 'bug')]]; then
+            patch=$((patch + 1))
+          else
+            pass
+          fi
+          
+            new_version="$major.$minor.$patch"
             
 
 
