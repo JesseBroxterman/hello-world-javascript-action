@@ -15,7 +15,18 @@ jobs:
     
       - name: Get current version
         run: echo "current_version=$(git describe --tags --abbrev=0)" >> "$GITHUB_ENV"
-                  
+      
+      - name: Extract Label Names
+        run: |
+          # Install jq for JSON processing
+          sudo apt-get update && sudo apt-get install -y jq
+
+          # Extracting label names using jq and storing them in the 'label_names' variable
+          label_names=$(echo "${{ toJson(github.event.pull_request.labels) }}" | jq -r '.[].name')
+
+          # Printing the label names for verification
+          echo "labels=$label_names" >> "$GITHUB_ENV"
+      
       - name: Increment version
         run: |
           IFS='.' read -r -a version_parts <<< "$current_version"
@@ -23,20 +34,18 @@ jobs:
           minor="${version_parts[1]}"
           patch="${version_parts[2]}"
 
-          labels="${{ github.event.labels.*.name }}"
-          for label in $labels; do
-            echo "$label"
-            if [[ "$label" == "enhancement" ]]; then
-              # Increment the minor version and set the patch to 0
-              ((minor++))
-              patch=0
-            elif [[ "$label" == "bug" ]]; then
-              patch=$((patch + 1))
-            fi
-          done
+          if [[ $env.labels, 'enhancement') ]]; then
+            # Increment the minor version and set the patch to 0
+            ((minor++))
+            patch=0
+          elif [[ $env.labels, 'bug')]]; then
+            patch=$((patch + 1))
+          else
+            pass
+          fi
           
-          new_version="$major.$minor.$patch"
-          echo "$new_version"  
+            new_version="$major.$minor.$patch"
+            
             
 
 
