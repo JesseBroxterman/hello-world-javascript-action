@@ -23,7 +23,7 @@ jobs:
           minor="${version_parts[1]}"
           patch="${version_parts[2]}"
 
-          labels="${{ github.event.pull_request.labels.*.name }}"
+          labels="${{ github.event.labels.*.name }}"
           for label in $labels; do
             echo "$label"
             if [[ "$label" == "enhancement" ]]; then
