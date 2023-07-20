@@ -78,8 +78,8 @@ jobs:
       - name: Assign new version tag
         run: |
           echo "major = ${{ steps.parse-major.outputs.result }}"
-          echo "minor = $MINOR 
-          echo "patch = $PATCH
+          echo "minor = $MINOR"
+          echo "patch = $PATCH"
    
 
             
