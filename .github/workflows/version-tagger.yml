@@ -17,11 +17,11 @@ jobs:
         run: CURRENT_VERSION=$(git describe --tags --abbrev=0) >> "$GITHUB_ENV"
       
       - name: Bump Minor
-        if: contains(github.event.pull_request.labels.*.name, 'enhancement'
+        if: contains(github.event.pull_request.labels.*.name, 'enhancement')
         run: MINOR_BUMP=true 
           
       - name: Bump Patch
-        if: contains(github.event.pull_request.labels.*.name, 'bug'
+        if: contains(github.event.pull_request.labels.*.name, 'bug')
         run: PATCH_BUMP=true 
       
       - name: Parse major
