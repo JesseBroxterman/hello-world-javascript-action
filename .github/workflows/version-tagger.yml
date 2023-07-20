@@ -12,19 +12,29 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-    
+      
+      - name: Get current version 
+        run: echo "CURRENT_VERSION=$(git describe --tags --abbrev=0)" >> "$GITHUB_ENV"
+      
       - name: Get current version
-        run: |
-          echo "current_version=$(git describe --tags --abbrev=0)"
-          major=$(echo "$current_version" | grep -oP '^\d+')
-          minor=$(echo "$current_version" | grep -oP '\.\K\d+')
-          patch=$(echo "$current_version" | grep -oP '\.\K\d+$')
-          echo "major=$major"
-          echo "minor=$minor"
-          echo "patch=$patch"
-          echo "major=$major" >> "$GITHUB_ENV"
-          echo "minor=$minor" >> "$GITHUB_ENV"
-          echo "patch=$patch" >> "$GITHUB_ENV"
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const current_version= process.env.CURRENT_VERSION;
+            
+            // Regular expression to extract major, minor, and patch components
+            const versionRegex = /^(\d+)\.(\d+)\.(\d+)$/;
+
+            const [, major, minor, patch] = current_version.match(versionRegex);
+
+            console.log(`major=${major}`);
+            console.log(`minor=${minor}`);
+            console.log(`patch=${patch}`);
+
+            process.env['MAJOR'] = major;
+            process.env['MINOR'] = minor;
+            process.env['PATCH'] = patch;            
+
           
 
 
