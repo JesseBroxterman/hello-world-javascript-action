@@ -38,28 +38,23 @@ jobs:
       - name: Bump patch
         if: contains(github.event.pull_request.labels.*.name, 'bug')
         run: |
-          new_patch=$((env.PATCH + 1))
+          new_patch=$(($PATCH + 1))
           echo "PATCH=$new_patch" >> "$GITHUB_ENV"
           
       - name: Bump minor
         if: contains(github.event.pull_request.labels.*.name, 'enhancement')
         run: |
-          new_minor=$((env.MINOR + 1))
+          new_minor=$(($MINOR + 1))
           new_patch=0
           echo "MINOR=$new_minor" >> "$GITHUB_ENV"
           echo "PATCH=$new_patch" >> "$GITHUB_ENV"
           
       - name: Assign new version tag
         run: |
-          echo "${{ env.MAJOR }}"
-          echo "${{ env.MINOR }}"   
-          echo "${{ env.PATCH }}"             
-
-
-
-
-
-      
+          echo "${{ $MAJOR }}"
+          echo "${{ $MINOR }}"   
+          echo "${{ $PATCH }}"             
+   
 
             
             
