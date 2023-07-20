@@ -74,18 +74,17 @@ jobs:
             const [, major, minor, patch] = current_version.match(versionRegex);
 
             if (patch_bump == 'true') {
-              patch = patch + 1;
-              console.log("Patch bumped");
-              console.log(patch);
+              const new_patch = patch + 1;
+              return new_patch;
             } 
 
             if (minor_bump == 'true') {
-              patch = 0;
+              const new_patch = 0;
               console.log("Minor bumped");
-              console.log(patch);
+              console.log(new_patch);
+              return new_patch;
             } 
             return patch;                              
-         
          
       - name: Assign new version tag
         run: |
