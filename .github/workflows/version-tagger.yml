@@ -16,7 +16,7 @@ jobs:
       - name: Get current version
         run: |
           echo "current_version=$(git describe --tags --abbrev=0)"
-          major=${current_version%%.*}
+          major=${current_version%%.*.*}
           minor=${current_version##*.}
           patch=${current_version##*.}
           echo "major=$major"
