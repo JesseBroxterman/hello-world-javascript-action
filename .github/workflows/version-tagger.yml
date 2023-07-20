@@ -52,7 +52,7 @@ jobs:
 
             const [, major, minor, patch] = current_version.match(versionRegex);
 
-            if (minor_bump = 'true') {
+            if (minor_bump == 'true') {
               minor = minor + 1;
             }
             return minor;            
@@ -71,11 +71,11 @@ jobs:
 
             const [, major, minor, patch] = current_version.match(versionRegex);
 
-            if (patch_bump = 'true') {
+            if (patch_bump == 'true') {
               patch = patch + 1;
             } 
 
-            if (minor_bump = 'true') {
+            if (minor_bump == 'true') {
               patch = 0;
             } 
             return patch;                              
