@@ -18,11 +18,11 @@ jobs:
       
       - name: Bump Minor
         if: contains(github.event.pull_request.labels.*.name, 'enhancement')
-        run: MINOR_BUMP=true 
+        run: echo "MINOR_BUMP=true" >> "$GITHUB_ENV" 
           
       - name: Bump Patch
         if: contains(github.event.pull_request.labels.*.name, 'bug')
-        run: PATCH_BUMP=true 
+        run: echo "PATCH_BUMP=true" >> "GITHUB_ENV" 
       
       - name: Parse major
         uses: actions/github-script@v5
