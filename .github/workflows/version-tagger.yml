@@ -31,7 +31,7 @@ jobs:
             console.log(`major=${major}`);
             return major;
             
-      - name: Parse minor
+      - name: Parse and bump minor
         uses: actions/github-script@v5
         id: parse-minor
         with:
@@ -43,10 +43,12 @@ jobs:
 
             const [, major, minor, patch] = current_version.match(versionRegex);
 
-            console.log(`minor=${minor}`);
+            if (contains(github.event.pull_request.labels.*.name, 'enhancement') {
+              minor = minor + 1;
+            }
             return minor;            
             
-      - name: Parse patch
+      - name: Parse and bump patch
         uses: actions/github-script@v5
         id: parse-patch
         with:
@@ -58,23 +60,14 @@ jobs:
 
             const [, major, minor, patch] = current_version.match(versionRegex);
 
-            console.log(`patch=${patch}`);
-            return patch;              
-          
-      - name: Bump patch
-        if: contains(github.event.pull_request.labels.*.name, 'bug')
-        run: |
-          new_patch=$(($steps.parse-patch.outputs.result + 1))
-          echo "PATCH=$new_patch" >> "$GITHUB_ENV"
-          
-      - name: Bump minor
-        if: contains(github.event.pull_request.labels.*.name, 'enhancement')
-        run: |
-          new_minor=$(($steps.parse-minor.outputs.result + 1))
-          new_patch=0
-          echo "MINOR=$new_minor" >> "$GITHUB_ENV"
-          echo "PATCH=$new_patch" >> "$GITHUB_ENV"   
-          
+            if (contains(github.event.pull_request.labels.*.name, 'enhancement') {
+              patch = 0;
+            } else {
+              patch = patch + 1;
+            }
+            return patch;                              
+         
+         
       - name: Assign new version tag
         run: |
           echo "major = ${{ steps.parse-major.outputs.result }}"
