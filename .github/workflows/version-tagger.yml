@@ -16,7 +16,7 @@ jobs:
       - name: Get current version 
         run: echo "CURRENT_VERSION=$(git describe --tags --abbrev=0)" >> "$GITHUB_ENV"
       
-      - name: Get current version
+      - name: Parse version
         uses: actions/github-script@v5
         with:
           script: |
@@ -33,9 +33,26 @@ jobs:
 
             process.env['MAJOR'] = major;
             process.env['MINOR'] = minor;
-            process.env['PATCH'] = patch;            
+            process.env['PATCH'] = patch;          
 
+      - name: Bump patch
+        if: contains(github.event.pull_request.labels.*.name, 'bug')
+        run: |
+          patch=$((patch + 1))
+          echo "patch=$patch" >> "$GITHUB_ENV"
           
+      - name: Bump minor
+        if: contains(github.event.pull_request.labels.*.name, 'enhancement')
+        run: |
+          minor=$((minor + 1))
+          patch=0
+          echo "minor=$minor" >> "$GITHUB_ENV"
+          echo "patch=$patch" >> "$GITHUB_ENV"
+          
+      - name: Assign new version tag
+        run: |
+          new_version="$major.$minor.$patch"
+          echo "$new_version"        
 
 
 
