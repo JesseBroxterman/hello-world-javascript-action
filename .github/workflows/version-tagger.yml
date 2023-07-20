@@ -31,9 +31,9 @@ jobs:
             console.log(`minor=${minor}`);
             console.log(`patch=${patch}`);
 
-            process.env['MAJOR'] = major;
-            process.env['MINOR'] = minor;
-            process.env['PATCH'] = patch;          
+            process.env['MAJOR'] = ${major};
+            process.env['MINOR'] = ${minor};
+            process.env['PATCH'] = ${patch};          
 
 
           
