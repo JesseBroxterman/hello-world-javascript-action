@@ -13,8 +13,16 @@ jobs:
         with:
           fetch-depth: 0
       
-      - name: Get current version 
-        run: echo "CURRENT_VERSION=$(git describe --tags --abbrev=0)" >> "$GITHUB_ENV"
+      - name: Get Current Version
+        run: CURRENT_VERSION=$(git describe --tags --abbrev=0) >> "$GITHUB_ENV"
+      
+      - name: Bump Minor
+        if: contains(github.event.pull_request.labels.*.name, 'enhancement'
+        run: MINOR_BUMP=true 
+          
+      - name: Bump Patch
+        if: contains(github.event.pull_request.labels.*.name, 'bug'
+        run: PATCH_BUMP=true 
       
       - name: Parse major
         uses: actions/github-script@v5
@@ -37,13 +45,14 @@ jobs:
         with:
           script: |
             const current_version= process.env.CURRENT_VERSION;
+            const minor_bump = process.env.MINOR_BUMP;
             
             // Regular expression to extract major, minor, and patch components
             const versionRegex = /^(\d+)\.(\d+)\.(\d+)$/;
 
             const [, major, minor, patch] = current_version.match(versionRegex);
 
-            if (contains(github.event.pull_request.labels.*.name, 'enhancement') {
+            if (minor_bump = 'true') {
               minor = minor + 1;
             }
             return minor;            
@@ -54,25 +63,29 @@ jobs:
         with:
           script: |
             const current_version= process.env.CURRENT_VERSION;
+            const minor_bump = process.env.MINOR_BUMP;
+            const patch_bump = process.env.PATCH_BUMP;            
             
             // Regular expression to extract major, minor, and patch components
             const versionRegex = /^(\d+)\.(\d+)\.(\d+)$/;
 
             const [, major, minor, patch] = current_version.match(versionRegex);
 
-            if (contains(github.event.pull_request.labels.*.name, 'enhancement') {
-              patch = 0;
-            } else {
+            if (patch_bump = 'true') {
               patch = patch + 1;
-            }
+            } 
+
+            if (minor_bump = 'true') {
+              patch = 0;
+            } 
             return patch;                              
          
          
       - name: Assign new version tag
         run: |
           echo "major = ${{ steps.parse-major.outputs.result }}"
-          echo "minor = $MINOR"
-          echo "patch = $PATCH"
+          echo "minor = ${{ steps.parse-minor.outputs.result }}"
+          echo "patch = ${{ steps.parse-patch.outputs.result }}"
    
 
             
