@@ -22,7 +22,7 @@ jobs:
           
       - name: Bump Patch
         if: contains(github.event.pull_request.labels.*.name, 'bug')
-        run: echo "PATCH_BUMP=true" >> "GITHUB_ENV" 
+        run: echo "PATCH_BUMP=true" >> "$GITHUB_ENV" 
       
       - name: Parse major
         uses: actions/github-script@v5
