@@ -16,8 +16,9 @@ jobs:
       - name: Get current version 
         run: echo "CURRENT_VERSION=$(git describe --tags --abbrev=0)" >> "$GITHUB_ENV"
       
-      - name: Parse version
+      - name: Parse major
         uses: actions/github-script@v5
+        id: parse-major
         with:
           script: |
             const current_version= process.env.CURRENT_VERSION;
@@ -28,20 +29,43 @@ jobs:
             const [, major, minor, patch] = current_version.match(versionRegex);
 
             console.log(`major=${major}`);
+            return major;
+            
+      - name: Parse minor
+        uses: actions/github-script@v5
+        id: parse-minor
+        with:
+          script: |
+            const current_version= process.env.CURRENT_VERSION;
+            
+            // Regular expression to extract major, minor, and patch components
+            const versionRegex = /^(\d+)\.(\d+)\.(\d+)$/;
+
+            const [, major, minor, patch] = current_version.match(versionRegex);
+
             console.log(`minor=${minor}`);
+            return minor;            
+            
+      - name: Parse patch
+        uses: actions/github-script@v5
+        id: parse-patch
+        with:
+          script: |
+            const current_version= process.env.CURRENT_VERSION;
+            
+            // Regular expression to extract major, minor, and patch components
+            const versionRegex = /^(\d+)\.(\d+)\.(\d+)$/;
+
+            const [, major, minor, patch] = current_version.match(versionRegex);
+
             console.log(`patch=${patch}`);
-
-            process.env['MAJOR'] = ${major};
-            process.env['MINOR'] = ${minor};
-            process.env['PATCH'] = ${patch};          
-
-
+            return patch;              
           
       - name: Assign new version tag
         run: |
-          echo "major = $MAJOR"
-          echo "minor = $MINOR"   
-          echo "patch = $PATCH"      
+          echo "major = ${{ steps.parse-major.outputs.result }}"
+          echo "minor = ${{ steps.parse-minor.outputs.result }}"   
+          echo "patch = ${{ steps.parse-patch.outputs.result }}"  
    
 
             
