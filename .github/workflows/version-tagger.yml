@@ -51,9 +51,9 @@ jobs:
           
       - name: Assign new version tag
         run: |
-          echo ${{ "env.MAJOR }}"
-          echo ${{ "env.MINOR }}"   
-          echo ${{ "env.PATCH }}"             
+          echo "${{ env.MAJOR }}"
+          echo "${{ env.MINOR }}"   
+          echo "${{ env.PATCH }}"             
 
 
 
