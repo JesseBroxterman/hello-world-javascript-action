@@ -54,6 +54,7 @@ jobs:
 
             if (minor_bump == 'true') {
               minor = minor + 1;
+              console.log("Minor bumped");           
             }
             return minor;            
             
@@ -73,10 +74,14 @@ jobs:
 
             if (patch_bump == 'true') {
               patch = patch + 1;
+              console.log("Patch bumped");
+              console.log(patch);
             } 
 
             if (minor_bump == 'true') {
               patch = 0;
+              console.log("Minor bumped");
+              console.log(patch);
             } 
             return patch;                              
          
