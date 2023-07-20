@@ -14,7 +14,7 @@ jobs:
           fetch-depth: 0
       
       - name: Get Current Version
-        run: CURRENT_VERSION=$(git describe --tags --abbrev=0) >> "$GITHUB_ENV"
+        run: echo "CURRENT_VERSION=$(git describe --tags --abbrev=0)" >> "$GITHUB_ENV"
       
       - name: Bump Minor
         if: contains(github.event.pull_request.labels.*.name, 'enhancement')
