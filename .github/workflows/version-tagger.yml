@@ -51,9 +51,9 @@ jobs:
           
       - name: Assign new version tag
         run: |
-          echo "${{ $MAJOR }}"
-          echo "${{ $MINOR }}"   
-          echo "${{ $PATCH }}"             
+          echo "$MAJOR"
+          echo "$MINOR"   
+          echo "$PATCH"      
    
 
             
