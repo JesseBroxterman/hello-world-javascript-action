@@ -65,7 +65,8 @@ jobs:
           script: |
             const current_version= process.env.CURRENT_VERSION;
             const minor_bump = process.env.MINOR_BUMP;
-            const patch_bump = process.env.PATCH_BUMP;            
+            const patch_bump = process.env.PATCH_BUMP;
+            console.log(patch_bump);
             
             // Regular expression to extract major, minor, and patch components
             const versionRegex = /^(\d+)\.(\d+)\.(\d+)$/;
