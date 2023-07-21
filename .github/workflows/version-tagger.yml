@@ -22,8 +22,8 @@ jobs:
         id: increment-version
         uses: JesseBroxterman/semantic-version-increment@v2
         with:
-          current_version: $CURRENT_VERSION
-          pr_labels: $PR_LABELS
+          current_version: ${{ env.CURRENT_VERSION }}
+          pr_labels: ${{ env.PR_LABELS }}
           
       - name: Check Output
         run: echo "${{ steps.increment-version.new_version }}"
