@@ -16,14 +16,15 @@ jobs:
       - name: Get Set Inputs
         run: |
           echo "CURRENT_VERSION=$(git describe --tags --abbrev=0)" >> "$GITHUB_ENV"
-          echo "PR_LABELS=${{ github.event.pull_request.labels.*.name }}" >> "$GITHUB_ENV"
+          echo "PR_LABELS=${{ github.event.pull_request.labels.*.name }}"
+          echo "PR_LABELS_STRING=$(IFS=','; echo "${PR_LABELS[*]}")" >> "$GITHUB_ENV"
       
       - name: Increment Version
         id: increment-version
-        uses: JesseBroxterman/semantic-version-increment@v2
+        uses: JesseBroxterman/semantic-version-increment@v2.0.1
         with:
           current_version: ${{ env.CURRENT_VERSION }}
-          pr_labels: ${{ env.PR_LABELS }}
+          pr_labels: ${{ env.PR_LABELS_STRING }}
           
       - name: Check Output
         run: echo "${{ steps.increment-version.new_version }}"
