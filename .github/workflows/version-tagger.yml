@@ -16,82 +16,15 @@ jobs:
       - name: Get Current Version
         run: echo "CURRENT_VERSION=$(git describe --tags --abbrev=0)" >> "$GITHUB_ENV"
       
-      - name: Bump Minor
-        if: contains(github.event.pull_request.labels.*.name, 'enhancement')
-        run: echo "MINOR_BUMP=true" >> "$GITHUB_ENV" 
+      - name: Increment Version
+        id: increment-version
+        uses: JesseBroxterman/semantic-version-increment@v1
+        with:
+          current_version: $CURRENT_VERSION
+          pr_labels: github.event.pull_request.labels.*.name
           
-      - name: Bump Patch
-        if: contains(github.event.pull_request.labels.*.name, 'bug')
-        run: echo "PATCH_BUMP=true" >> "$GITHUB_ENV" 
-      
-      - name: Parse major
-        uses: actions/github-script@v5
-        id: parse-major
-        with:
-          script: |
-            const current_version= process.env.CURRENT_VERSION;
-            
-            // Regular expression to extract major, minor, and patch components
-            const versionRegex = /^(\d+)\.(\d+)\.(\d+)$/;
-
-            const [, major, minor, patch] = current_version.match(versionRegex);
-
-            console.log(`major=${major}`);
-            return major;
-            
-      - name: Parse and bump minor
-        uses: actions/github-script@v5
-        id: parse-minor
-        with:
-          script: |
-            const current_version= process.env.CURRENT_VERSION;
-            const minor_bump = process.env.MINOR_BUMP;
-            
-            // Regular expression to extract major, minor, and patch components
-            const versionRegex = /^(\d+)\.(\d+)\.(\d+)$/;
-
-            const [, major, minor, patch] = current_version.match(versionRegex);
-
-            if (minor_bump == 'true') {
-              minor = minor + 1;
-              console.log("Minor bumped");           
-            }
-            return minor;            
-            
-      - name: Parse and bump patch
-        uses: actions/github-script@v5
-        id: parse-patch
-        with:
-          script: |
-            const current_version= process.env.CURRENT_VERSION;
-            const minor_bump = process.env.MINOR_BUMP;
-            const patch_bump = process.env.PATCH_BUMP;
-            console.log(patch_bump);
-            
-            // Regular expression to extract major, minor, and patch components
-            const versionRegex = /^(\d+)\.(\d+)\.(\d+)$/;
-
-            const [, major, minor, patch] = current_version.match(versionRegex);
-
-            if (patch_bump == 'true') {
-              const new_patch = patch + 1;
-              return new_patch;
-            } 
-
-            if (minor_bump == 'true') {
-              const new_patch = 0;
-              console.log("Minor bumped");
-              console.log(new_patch);
-              return new_patch;
-            } 
-            return patch;                              
-         
-      - name: Assign new version tag
-        run: |
-          echo "major = ${{ steps.parse-major.outputs.result }}"
-          echo "minor = ${{ steps.parse-minor.outputs.result }}"
-          echo "patch = ${{ steps.parse-patch.outputs.result }}"
-   
+      - name: Check Output
+        run: echo "${{ steps.increment-version.new_version }}"
 
             
             
