@@ -20,7 +20,7 @@ jobs:
       
       - name: Increment Version
         id: increment-version
-        uses: JesseBroxterman/semantic-version-increment@v1
+        uses: JesseBroxterman/semantic-version-increment@v2
         with:
           current_version: $CURRENT_VERSION
           pr_labels: $PR_LABELS
