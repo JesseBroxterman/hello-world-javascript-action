@@ -31,7 +31,7 @@ jobs:
           pr_labels: ${{ env.PR_LABELS_STRING }}
           
       - name: Check Output
-        run: echo "${{ steps.increment-version.new_version }}"
+        run: echo "${{ steps.increment-version.outputs.new_version }}"
 
             
             
