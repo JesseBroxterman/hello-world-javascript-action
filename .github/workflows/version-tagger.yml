@@ -16,8 +16,7 @@ jobs:
       - name: Get Set Inputs
         run: |
           echo "CURRENT_VERSION=$(git describe --tags --abbrev=0)" >> "$GITHUB_ENV"
-          echo "PR_LABELS=${{ github.event.pull_request.labels.*.name }}"
-          echo "PR_LABELS_STRING=${{ join($PR_LABELS }} >> "$GITHUB_ENV"
+          echo "PR_LABELS_STRING=${{ join(github.event.pull_request.labels.*.name) }} >> "$GITHUB_ENV"
           
       - name: Check Inputs
         run: |
