@@ -32,6 +32,17 @@ jobs:
           
       - name: Check Output
         run: echo "${{ steps.increment-version.outputs.new_version }}"
+        
+      - name: Add New Tag
+        uses: actions/github-script@v5
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/${{ steps.increment-version.outputs.new_version }}',
+              sha: context.sha
+            })
 
             
             
