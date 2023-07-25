@@ -34,7 +34,7 @@ jobs:
         run: echo "${{ steps.increment-version.outputs.new_version }}"
         
       - name: Add New Tag
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           script: |
             github.rest.git.createRef({
