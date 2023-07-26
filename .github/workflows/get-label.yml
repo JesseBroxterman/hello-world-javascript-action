@@ -26,6 +26,8 @@ jobs:
       run: |
         issue_number=${{ steps.extract-issue.outputs.issue_number }}
         issue_data=$(curl -s "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/$issue_number")
+        echo "$issue_data"
+        echo "$GITHUB_REPOSITORY"
         issue_labels=$(echo "$issue_data" | jq -r '.labels[].name')
         echo "::set-output name=issue_labels::$issue_labels"
 
